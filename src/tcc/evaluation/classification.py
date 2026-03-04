@@ -55,7 +55,6 @@ def fit_linear_model(
     clf = LogisticRegression(
         max_iter=1000,
         solver="lbfgs",
-        multi_class="multinomial",
         C=1.0,
     )
     clf.fit(train_embs, train_labels)

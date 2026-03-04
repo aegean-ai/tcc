@@ -62,7 +62,6 @@ def _run_few_shot_episode(
     clf = LogisticRegression(
         max_iter=1000,
         solver="lbfgs",
-        multi_class="multinomial",
         C=1.0,
     )
     clf.fit(sub_embs, sub_labels)
