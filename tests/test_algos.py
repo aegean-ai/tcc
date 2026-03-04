@@ -122,7 +122,7 @@ class TestAlignment:
         model = _make_dummy_model(cfg)
         algo = Alignment(cfg=cfg, model=model)
 
-        embs = torch.randn(B, T, D)
+        embs = torch.randn(B, T, D, requires_grad=True)
         steps = _make_steps()
         seq_lens = _make_seq_lens()
 
