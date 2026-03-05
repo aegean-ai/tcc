@@ -2,5 +2,7 @@
   "database": "dolt",
   "backend": "dolt",
   "dolt_mode": "server",
-  "dolt_database": "tcc"
+  "dolt_server_port": 3316,
+  "dolt_database": "tcc",
+  "dolt_data_dir": "/home/pantelis.monogioudis/local/ai/apps/computer-vision/tcc/.beads/dolt"
 }
