@@ -1,0 +1,10 @@
+name: tcc
+notebooks_dir: notebooks
+registry: notebook-database.yml
+docker_service: torch.dev.gpu
+valid_environments:
+  - torch.dev.gpu
+  - colab
+source_prefix_strip:
+  - "aiml-common/assignments/topics/"
+  - "aiml-common/"

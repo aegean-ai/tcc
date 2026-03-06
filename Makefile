@@ -1,4 +1,4 @@
-.PHONY: install install-dev install-notebooks format lint lint-check type-check test test-cov clean build venv venv-recreate start deps-update deps-sync quality style
+.PHONY: install install-dev install-notebooks format lint lint-check type-check test test-cov clean build venv venv-recreate start deps-update deps-sync quality style execute-notebook
 
 # Use stage 0 container pip constraints (only if file exists)
 CONSTRAINT_FILE := /etc/pip/constraint.txt
@@ -90,3 +90,14 @@ start:
 	$(MAKE) install
 	$(VENV_PY) -m ipykernel install --user --name python3 --display-name "Python 3 (tcc)"
 	@echo "To activate the virtual environment, run: source .venv/bin/activate"
+
+# Notebook execution
+execute-notebook:
+ifndef NOTEBOOK
+	@echo "Error: NOTEBOOK parameter is required"
+	@echo "Usage: make execute-notebook NOTEBOOK=<notebook-path>"
+	@exit 1
+endif
+	@echo "Executing notebook in Docker: $(NOTEBOOK)"
+	docker compose run --rm torch.dev.gpu bash -c \
+		"make venv-recreate && make install-notebooks && uv pip install papermill && .venv/bin/python scripts/execute_notebook.py $(NOTEBOOK)"
