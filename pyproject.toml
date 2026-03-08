@@ -45,6 +45,7 @@ notebooks = [
     "seaborn>=0.13.0",
     "plotly>=5.18.0",
     "wandb>=0.18.0",
+    "huggingface-hub>=0.20.0",
 ]
 dev = [
     "pytest>=8.0.0",
