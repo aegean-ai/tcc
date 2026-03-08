@@ -2,8 +2,8 @@
 # Registry tracking notebooks and their execution environments.
 
 notebooks:
-  - source: aiml-common/assignments/topics/self-supervised/tcc-pouring-tutorial/temporal-cycle-consistency-learning.ipynb
+  - source: aiml-common/assignments/topics/self-supervised/temporal-cycle-consistency-learning/temporal-cycle-consistency-learning.ipynb
     notebook: self-supervised/tcc_pouring_tutorial_aegean_main.ipynb
-    code_cells: 22
+    code_cells: 23
     environment: torch.dev.gpu
     description: Temporal cycle-consistency learning with aegean-ai/tcc
