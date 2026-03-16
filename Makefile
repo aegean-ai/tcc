@@ -1,4 +1,4 @@
-.PHONY: install install-dev install-notebooks format lint lint-check type-check test test-cov clean build venv venv-recreate start deps-update deps-sync quality style execute-notebook
+.PHONY: install install-dev install-notebooks format lint lint-check type-check test test-cov clean build venv venv-recreate start deps-update deps-sync quality style execute-notebook data-prep train pipeline
 
 # Use stage 0 container pip constraints (only if file exists)
 CONSTRAINT_FILE := /etc/pip/constraint.txt
@@ -101,3 +101,19 @@ endif
 	@echo "Executing notebook in Docker: $(NOTEBOOK)"
 	docker compose run --rm torch.dev.gpu bash -c \
 		"make venv-recreate && make install-notebooks && uv pip install papermill && .venv/bin/python scripts/execute_notebook.py $(NOTEBOOK) $(NB_PARAMS)"
+
+# Two-stage notebook pipeline
+data-prep:
+	@echo "Stage 1: Data preparation"
+	docker compose run --rm torch.dev.gpu bash -c \
+		"make venv-recreate && make install-notebooks && uv pip install papermill && \
+		.venv/bin/python scripts/execute_notebook.py notebooks/self-supervised/tcc_data_prep.ipynb $(NB_PARAMS)"
+
+train:
+	@echo "Stage 2: Training & evaluation"
+	docker compose run --rm torch.dev.gpu bash -c \
+		"make venv-recreate && make install-notebooks && uv pip install papermill && \
+		.venv/bin/python scripts/execute_notebook.py notebooks/self-supervised/tcc_training.ipynb $(NB_PARAMS)"
+
+pipeline: data-prep train
+	@echo "Pipeline complete (data-prep -> train)"
