@@ -260,7 +260,7 @@ class LoggingConfig:
 
     report_interval: int = 100
     wandb_enabled: bool = False
-    wandb_project: str = "tcc"
+    wandb_project: str = "eng-ai-agents"
     wandb_entity: str = ""
     wandb_run_name: str = ""
 
