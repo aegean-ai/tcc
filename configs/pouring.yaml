@@ -1,0 +1,23 @@
+# Storage configuration for the TCC pouring pipeline.
+# Set `storage_backend` to "local" or "s3" to switch profiles.
+
+storage_backend: local
+
+dataset_name: pouring
+
+# ── Local profile ─────────────────────────────────────────────────
+# Used when storage_backend=local (Colab, dev container, no S3).
+local:
+  raw_dir: data/pouring
+  processed_dir: data/pouring_processed
+
+# ── S3 profile ────────────────────────────────────────────────────
+# Used when storage_backend=s3 (MinIO lakehouse).
+# Credentials come from environment: MINIO_ACCESS_KEY, MINIO_SECRET_KEY.
+s3:
+  endpoint: ${MINIO_ENDPOINT:-http://192.168.1.26:9000}
+  bucket: landing
+  prefix: tcc/pouring
+  use_ssl: false
+  # Local cache directory for S3 mode (frames are cached locally for training)
+  cache_dir: data/pouring_cache
