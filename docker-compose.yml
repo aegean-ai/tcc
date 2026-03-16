@@ -27,6 +27,7 @@ services:
     command: bash -c "tail -f /dev/null"
     stdin_open: true
     tty: true
+    shm_size: "2g"
     deploy:
       resources:
         reservations:
