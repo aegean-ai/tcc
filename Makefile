@@ -100,4 +100,4 @@ ifndef NOTEBOOK
 endif
 	@echo "Executing notebook in Docker: $(NOTEBOOK)"
 	docker compose run --rm torch.dev.gpu bash -c \
-		"make venv-recreate && make install-notebooks && uv pip install papermill && .venv/bin/python scripts/execute_notebook.py $(NOTEBOOK)"
+		"make venv-recreate && make install-notebooks && uv pip install papermill && .venv/bin/python scripts/execute_notebook.py $(NOTEBOOK) $(NB_PARAMS)"
