@@ -79,6 +79,8 @@ def get_scaled_similarity(
     similarity = similarity / channels
     # Scale by temperature (controls soft/hard alignment).
     similarity = similarity / temperature
+    # Clamp to prevent overflow in downstream softmax.
+    similarity = similarity.clamp(-50.0, 50.0)
 
     return similarity
 

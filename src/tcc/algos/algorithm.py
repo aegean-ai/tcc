@@ -175,6 +175,7 @@ class Algorithm(nn.Module):
         total_loss = loss + l2_reg
 
         total_loss.backward()
+        torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm=10.0)
         optimizer.step()
 
         return total_loss.item()
