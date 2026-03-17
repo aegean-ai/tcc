@@ -375,6 +375,7 @@ class VideoDataset(Dataset):
         self.seq_labels: List[int] = []
         self._frame_labels_cache: List[Optional[np.ndarray]] = []
 
+        valid_video_dirs: List[str] = []
         for vdir in self.video_dirs:
             frames = sorted(
                 [
@@ -384,6 +385,9 @@ class VideoDataset(Dataset):
                 ],
                 key=lambda p: _natural_sort_key(os.path.basename(p)),
             )
+            if len(frames) == 0:
+                continue
+            valid_video_dirs.append(vdir)
             self.frame_paths.append(frames)
 
             # Sequence-level label
@@ -404,6 +408,8 @@ class VideoDataset(Dataset):
                     self._frame_labels_cache.append(None)
             else:
                 self._frame_labels_cache.append(None)
+
+        self.video_dirs = valid_video_dirs
 
     # ------------------------------------------------------------------
     def __len__(self) -> int:
