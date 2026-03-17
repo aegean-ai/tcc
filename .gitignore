@@ -45,7 +45,9 @@ datasets/
 logs/
 *.log
 runs/
+runs_tutorial/
 wandb/
+events.out*
 
 # uv
 .uv-cache
