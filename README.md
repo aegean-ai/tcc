@@ -11,35 +11,39 @@ Self-supervised representation learning on videos by exploiting temporal cycle-c
 
 ## Dataset
 
-The **multiview pouring dataset** used for training and evaluation is hosted on HuggingFace:
+The **multiview pouring dataset** is sourced from HuggingFace
+([`sermanet/multiview-pouring`](https://huggingface.co/datasets/sermanet/multiview-pouring))
+and processed into per-frame images for PyTorch training.
 
-> [`sermanet/multiview-pouring`](https://huggingface.co/datasets/sermanet/multiview-pouring)
+### Two-notebook pipeline
 
-Download with `huggingface_hub`:
+The data and training workflow is split into two notebooks under
+`notebooks/self-supervised/`:
 
-```python
-from huggingface_hub import snapshot_download
+| Notebook | Purpose |
+|----------|---------|
+| `tcc_data_prep.ipynb` | Download raw videos from HuggingFace, extract frames, optionally upload to S3 |
+| `tcc_training.ipynb` | Load processed data, train TCC models (D=32/64/128), evaluate and visualize |
 
-snapshot_download(
-    repo_id="sermanet/multiview-pouring",
-    repo_type="dataset",
-    local_dir="data/pouring",
-)
-```
+### Storage backends
 
-Or via the CLI:
+Configured in `configs/pouring.yaml` via `storage_backend`:
+
+| Backend | When to use | Data flow |
+|---------|-------------|-----------|
+| **`s3`** (default) | GPU nodes with MinIO access | Data-prep uploads to S3; training downloads from S3 to local cache |
+| **`local`** | Colab, laptops, no S3 available | Both notebooks read/write under `data/` |
+
+The `data/` directory is a **local cache** — it is regenerated automatically
+by the notebooks and does not need to be checked in or preserved.
+
+### Quick start
 
 ```bash
-huggingface-cli download sermanet/multiview-pouring --repo-type dataset --local-dir data/pouring
-```
-
-After downloading, convert the TFRecords to the image-folder format required by the PyTorch pipeline:
-
-```bash
-python -m tcc.dataset_preparation.videos_to_dataset \
-    --input-dir data/pouring \
-    --output-dir data/pouring_processed/pouring \
-    --name pouring --fps 15 --width 224 --height 224
+# Inside the devcontainer:
+make data-prep          # Stage 1: download + process
+make train              # Stage 2: train + evaluate
+make pipeline           # Both stages sequentially
 ```
 
 ## Self-supervised Algorithms
