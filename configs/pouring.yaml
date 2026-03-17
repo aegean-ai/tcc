@@ -1,7 +1,7 @@
 # Storage configuration for the TCC pouring pipeline.
 # Set `storage_backend` to "local" or "s3" to switch profiles.
 
-storage_backend: local
+storage_backend: s3
 
 dataset_name: pouring
 
