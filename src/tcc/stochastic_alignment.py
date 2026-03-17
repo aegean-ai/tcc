@@ -63,6 +63,8 @@ def _align_single_cycle(
         similarity = similarity / float(num_channels)
         # Scale the distance by temperature.
         similarity = similarity / temperature
+        # Clamp to prevent overflow in softmax (numerically safe range).
+        similarity = similarity.clamp(-50.0, 50.0)
 
         beta = F.softmax(similarity, dim=0)  # [T]
         beta = beta.unsqueeze(1).expand(-1, num_channels)  # [T, D]
