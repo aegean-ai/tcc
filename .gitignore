@@ -55,3 +55,6 @@ events.out*
 # Dolt database files (added by bd init)
 .dolt/
 *.db
+
+# Beads issue tracker (local-only, contains proprietary work items)
+.beads/
